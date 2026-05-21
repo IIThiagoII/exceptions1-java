@@ -16,12 +16,13 @@ public class BancoService {
     public ContaBancaria buscarConta(String numero) {
         ContaBancaria conta = contasDB.get(numero);
         if (conta == null) {
-            throw new ContaNaoEncontradaException("A conta número " + numero + " não foi encontrada.");
+            throw new IllegalArgumentException("A conta número " + numero + " não existe no sistema.");
         }
         return conta;
     }
 
     public void realizarTransferencia(String numeroOrigem, String numeroDestino, double valor) {
+
         ContaBancaria origem = buscarConta(numeroOrigem);
         ContaBancaria destino = buscarConta(numeroDestino);
 

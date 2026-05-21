@@ -1,40 +1,52 @@
-# 🎮 Laboratório de Prática: O Jogo da Velha (Três Níveis de Arquitetura)
+# 🧪 Laboratório de Prática Java: Arquitetura e Resiliência
 
-Este diretório reúne meus exercícios de revisão e prática avulsa. O objetivo principal deste laboratório foi desenvolver o clássico **Jogo da Velha** evoluindo o projeto através de três níveis diferentes de arquitetura e maturidade de código.
+Este repositório reúne meus exercícios de revisão, desafios e projetos práticos avulsos em Java. O objetivo principal deste laboratório é aplicar conceitos de mercado, evoluindo a maturidade do meu código a cada projeto desenvolvido.
 
 ---
 
-## 📌 Linha do Tempo e Estrutura do Projeto
+## 🎮 Projeto 1: O Jogo da Velha (Três Níveis de Arquitetura)
 
-Navegue pelas pastas acima para conferir o código de cada etapa da evolução:
+O objetivo deste projeto foi desenvolver o clássico Jogo da Velha evoluindo o design através de três níveis diferentes de maturidade de código.
 
-### 📁 1. Versão Estruturada (Nível Inicial)
-* **Conceitos aplicados:** Lógica de matrizes (`char[][]`), laços de repetição (`while` / `for`), variáveis de controle e entrada de dados com `Scanner`.
-* **Foco do estudo:** Centralização da lógica no método `main` e tratamento de erros primitivo utilizando estruturas condicionais `if-else` aninhadas. Foi a base para sentir a necessidade de uma arquitetura melhor.
+### 📌 Estrutura e Evolução do Projeto
+* **📁 1. Versão Estruturada (Nível Inicial):** Centralização da lógica no método `main` com matrizes (`char[][]`) e laços de repetição. Base essencial para sentir a necessidade de refatoração.
+* **📁 2. Versão Orientada a Objetos (Nível Intermediário):** Divisão em entidades com responsabilidade única (`Jogador`, `Tabuleiro` e `Jogo`), aplicando abstração, métodos encapsulados e construtores.
+* **📁 3. Versão com Tratamento de Exceções (Nível Profissional):** Programação defensiva com blocos `try-catch`. Remoção de `if-else` aninhados através do lançamento da exceção customizada `JogoException` (herdando de `RuntimeException`).
 
-### 📁 2. Versão Orientada a Objetos (Nível Intermediário)
-* **Conceitos aplicados:** Abstração, classes, atributos, métodos, construtores e encapsulamento real de dados.
-* **Foco do estudo:** Descentralizar o código do `main`. O projeto foi dividido em entidades de responsabilidade única:
-    - `Jogador`: Armazena dados e símbolos.
-    - `Tabuleiro`: Modifica e gerencia a matriz sem expô-la diretamente de forma vulnerável.
-    - `Jogo`: Orquestra as rodadas e o fluxo através de ponteiros dinâmicos (alternando entre os objetos de jogadores).
+### 🧠 Conhecimentos Consolidados (Jogo da Velha)
+* **Manipulação de Estruturas de Dados Bidimensionais:** Aplicação prática de matrizes para renderização e validação de estados do tabuleiro.
+* **Arquitetura e Clean Code:** Decomposição de software focado no Princípio de Responsabilidade Única (SRP), separando lógica visual de regras de negócio.
+* **Introdução à Programação Defensiva:** Substituição de validações condicionais complexas por fluxos baseados no lançamento de exceções controladas.
 
-### 📁 3. Versão com Tratamento de Exceções (Nível Profissional)
-* **Conceitos aplicados:** Programação Defensiva, blocos `try-catch`, lançamento de exceções com `throw` e criação de exceções personalizadas.
-* **Foco do estudo:** Blindar a aplicação. O emaranhado de `if-else` de validação foi removido do fluxo principal.
-    - Criada a exceção customizada `JogoException` (herdando de `RuntimeException`) para validar limites e posições ocupadas no tabuleiro.
-    - Tratamento de robustez usando `InputMismatchException` para capturar e limpar o buffer do scanner caso o usuário digite letras em vez de números, impedindo o programa de travar.
+---
+
+## 🏦 Projeto 2: Sistema ATM Bancário (Tratamento Avançado de Erros e Serviços)
+
+Um terminal de caixa eletrônico (ATM) desenvolvido para simular operações financeiras complexas (saque, depósito e transferência entre contas), com foco absoluto em resiliência de interface e integridade de dados.
+
+### 🧠 Desafios Encontrados & Aprendizados Práticos (Superando Bugs Reais)
+
+Durante a construção do sistema ATM, enfrentei problemas clássicos de concorrência de memória e fluxo que consolidaram meu entendimento sobre a mecânica de execução do Java:
+
+1. **O Bug do Buffer do Scanner:** Inicialmente, o uso combinado de `nextInt()`/`nextDouble()` com `nextLine()` deixava quebras de linha (o caractere Enter) pendentes na memória. Isso fazia o menu capturar strings vazias no loop seguinte, quebrando o sistema e gerando erros ocultos de ponteiro nulo (`NullPointerException`).
+  * *Solução:* Migrei toda a entrada de dados do console para `scanner.nextLine()`, aplicando `.trim()` nas Strings e fazendo o parsing manual para os tipos numéricos (`Integer.parseInt` e `Double.parseDouble`). Isso limpou o fluxo de dados definitivamente.
+2. **Alinhamento de Escopo dos Blocos Try-Catch:** No início, erros em suboperações (como digitar uma conta inexistente para transferência) faziam a aplicação inteira encerrar abruptamente.
+  * *Solução:* Reestruturei a arquitetura do método `main`, aplicando "escudos" de proteção em níveis. Um bloco protege as operações diárias dentro do menu, enquanto outro gerencia de forma isolada o fluxo de Login. Agora, o sistema falha de forma elegante e mantém o usuário ativo no loop.
+3. **Exceções Customizadas sem Acoplamento:** Implementação de `SaldoInsuficienteException` e `ContaNao EncontradaException` estendendo `RuntimeException`. O aprendizado chave foi delegar as validações de saldo para a própria entidade (`ContaBancaria`) e as buscas de dados para a camada de gerenciamento (`BancoService`), mantendo o código limpo, legível e desacoplado.
+
+### 🧠 Conhecimentos Consolidados (Sistema ATM)
+* **Camada de Serviço (Service Pattern):** Separação clara entre a entidade de dados (`ContaBancaria`) e o gerenciador de regras de negócio (`BancoService`).
+* **Estruturas de Dados de Alta Performance:** Utilização de `Map` (`HashMap`) para busca direta de chaves e simulação eficiente de repositórios/bancos de dados em memória.
+* **Mecânica Interna da JVM e I/O:** Compreensão aprofundada de fluxos de entrada (`java.util.Scanner`), limpeza de buffers de memória e ciclo de vida de exceções nativas.
 
 ---
 
 ## 🛠️ Tecnologias e Ferramentas Utilizadas
-- **Linguagem:** Java SE
-- **IDE:** IntelliJ IDEA
-- **Ambiente de Versionamento:** Git / GitHub
 
----
+* **Linguagem:** Java SE
+* **IDE:** IntelliJ IDEA
+* **Ambiente de Versionamento:** Git / GitHub
 
-## 🧠 Aprendizado Obtido
-Esse laboratório foi o divisor de águas nos meus estudos em Java. 
-Conseguir enxergar o mesmo problema resolvido de forma amadora (estruturada) e depois aplicando as melhores práticas exigidas pelo mercado (OO e Exceções) sedimentou conceitos de legibilidade, 
-facilidade de manutenção e segurança de código que levarei para projetos reais.
+## 📈 Conclusão Geral do Laboratório
+
+Dominar a sintaxe é apenas o primeiro passo. Este laboratório tem sido o divisor de águas nos meus estudos porque me força a encarar os erros, entender o comportamento do ecossistema Java (como a gerência do teclado e das exceções) e aplicar os padrões de arquitetura exigidos pelo mercado (OO, Services e Programação Defensiva).
