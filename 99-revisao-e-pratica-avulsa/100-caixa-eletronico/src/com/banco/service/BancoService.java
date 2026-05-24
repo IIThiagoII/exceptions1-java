@@ -1,7 +1,6 @@
 package com.banco.service;
 
 import com.banco.model.ContaBancaria;
-import com.banco.exception.ContaNaoEncontradaException;
 import java.util.HashMap;
 import java.util.Map;
 

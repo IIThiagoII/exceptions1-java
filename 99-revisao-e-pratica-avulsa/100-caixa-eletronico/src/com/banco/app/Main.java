@@ -10,7 +10,7 @@ public class Main {
         BancoService banco = new BancoService();
 
         banco.cadastrarConta(new ContaBancaria("111", "Thiago Backend", 1000.0));
-        banco.cadastrarConta(new ContaBancaria("222", "Manoel Gomes", 500.0));
+        banco.cadastrarConta (new ContaBancaria("222", "Manoel Gomes", 500.0));
 
         System.out.println("=== BEM-VINDO AO TERMINAL ATM JAVA ===");
 
